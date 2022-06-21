@@ -1,0 +1,175 @@
+---
+title: "Untitled"
+format: html
+---
+
+# ELO Adjustments
+
+$$
+\underbrace{Elo}_{\text{current year}} = \underbrace{Elo}_{\text{previous year}} \times \frac{2}{3} + 1500 \times \frac{1}{3}
+$$
+
+You could also use a 4 year rolling mean since the average career is 3.5 years. However, the average player would not make as much difference as key players.
+
+Additionally, if you want to value margin of victory that discounts blowouts, e.g. winning by 21 points is not much better than winning by 28
+
+$$
+\text{Margin of Victory Multiplier} = ln(|\text{PointDiff}| +1) \times \frac{2.2}{|\underbrace{Elo}_{\text{A}} - \underbrace{Elo}_{\text{B}}| \times 0.001 + 2.2}
+$$
+
+If you want to include turnover and yard differential you could do
+
+Margin of Victory, Turnover, Yard, Differential Multiplier = MM
+
+$$
+\text{MM} = e^{(\frac{1}{5}(\text{Turnover Diff}))} \times \text{ ln } (| \text{PointDiff} | +1) \times \frac{2.2}{(|\underbrace{Elo}_{\text{A}} - \underbrace{Elo}_{\text{B}}| \times 0.001 + 2.2)}
+$$
+
+
+
+`http://schw4rzr0tg0ld.s3-website.eu-central-1.amazonaws.com/blog/2018/08/elo-boosting.html`
+
+The ELO model uses a scaled logistic function to map differences in strength to probabilities of won and loss. Let $Team_{A}$ be the elo rating for $Team_{A}$, and $Team_{B}$ for $Team_{B}$, and $y_{i} = 1$ if $Team_{A}$ wins, 0.5 if they draw, and 0 if they lose.
+
+```{r}
+calculate_predictor <- function(X, beta) {
+  # calculate the linear predictor Xbeta
+  colSums(t(X) * beta)
+}
+
+logistic_function <- function(predictor, scaling_factor = log(10)/400) {
+  # ELO uses a scaling factor compared of log(10) / 400 compared to the
+  # usual specification
+  1 / (1 + exp(-predictor * scaling_factor))
+}
+
+logistic_loss <- function(X, y, beta) {
+  # number of observations
+  N <- length(y)
+  # expected score, i.e. predicted probability for win/loss
+  e_score <- logistic_function(calculate_predictor(X, beta))
+
+  loss <- (1 / N) * sum(-y * log(e_score) - (1 - y) * log(1 - e_score))
+  return(loss)
+}
+
+update_beta <- function(X, y, beta, k) {
+  # number of observations
+  n <- length(y)
+  # expected score, i.e. predicted probability for win/loss
+  e_score <- logistic_function(calculate_predictor(X, beta))
+  # gradient and the current position
+  gradient <- colSums(X * (e_score - y))
+  # update step
+  beta <- beta - k * gradient
+  # print logistic loss
+  #print(logistic_loss(X, y, beta))
+  return(beta)
+}
+
+gradient_descent <- function(batches, beta_init, k, iterations) {
+  # set beta to initial value
+  beta <- beta_init
+  # initalize matrix to store updates
+  beta_history <- matrix(nrow = length(batches),
+                         ncol = length(beta_init))
+  # loop over iterations, aka epochs
+  for (i in 1:iterations) {
+    # loop over mini-batches
+    for (b in 1:length(batches)) {
+      # run update procedure
+      batch <- batches[[b]]
+      beta <- update_beta(batch$X, batch$y, beta, k)
+      beta_history[b, ] <- beta
+    }
+  }
+  return(beta_history)
+}
+```
+
+### A Simple Example
+
+```{r}
+data <- data.frame(
+  t = factor(c(0, 0, 0, 0, 1, 1, 1)),  # period
+  f = factor(c(1, 2, 3, 1, 2, 3, 3)),  # first team
+  s = factor(c(2, 3, 1, 3, 3, 1, 1)),  # second team
+  y = c(1, 1, 0, 1, 1, 0, 1) # win/loss
+  )  
+  
+get_input_variables <- function(data) {
+  design_matrix <-
+    model.matrix(~ as.factor(f) - 1, data) -
+    model.matrix(~ as.factor(s) - 1, data)
+  colnames(design_matrix) <- paste0("player_", seq_len(ncol(design_matrix)))
+  return(list(X = design_matrix, y = data$y))
+}
+
+batches <- lapply(split(data, data$t), get_input_variables)
+```
+
+```{r}
+# determine numer of players from data
+P <- max(sapply(batches, function(x) {ncol(x$X)}))
+# run batch gradient descent
+bgd_beta <- gradient_descent(batches, 
+                             beta = numeric(P), 
+                             k = 1,
+                             iterations = 1)
+# formatting
+bgd_beta_df <- data.frame(bgd_beta)
+colnames(bgd_beta_df) <- paste0("beta_", seq_len(P))
+```
+
+```{r}
+elo_ratings <- PlayerRatings::elo(data.frame(apply(data, 2, as.numeric)),
+                                  kfac = 1, init = 0, history = TRUE)
+# formatting
+elo_ratings_df <- data.frame(t(elo_ratings$history[, , "Rating"]))
+colnames(elo_ratings_df) <- paste0("beta_", seq_len(P))
+```
+
+```{r}
+data$t <- factor(0)
+# via glm
+single_batch <- get_input_variables(data)
+X <- single_batch$X[, -1]  # drop first player for identification
+y <- single_batch$y
+glm_beta <- c(0, coef(glm(y~ -1 + X, family = binomial)))
+glm_beta <- glm_beta * 400 / log(10)  # normalizing factor from ELO
+
+# formatting
+glm_beta_df <- data.frame(t(glm_beta))
+colnames(glm_beta_df) <- paste0("beta_", seq_len(P))
+```
+
+```{r}
+bgd_beta_opt <- gradient_descent(list(single_batch), 
+                             beta = numeric(P), 
+                             k = 1,
+                             iterations = 1000)
+
+# normalize btea_1 to zero
+bgd_beta_opt <- bgd_beta_opt - bgd_beta_opt[1, 1]
+# formatting
+bgd_beta_opt_df <- data.frame(bgd_beta_opt)
+colnames(bgd_beta_opt_df) <- paste0("beta_", seq_len(P))
+```
+
+```{r}
+# for ELO
+ELO_beta <- gradient_descent(list(single_batch), 
+                             beta = numeric(P), 
+                             k = 1,
+                             iterations = 1)
+logistic_loss(single_batch$X, single_batch$y, as.numeric(ELO_beta))
+```
+
+```{r}
+# for GLM
+GLM_beta <- gradient_descent(list(single_batch), 
+                             beta = numeric(P), 
+                             k = 1,
+                             iterations = 1000)
+logistic_loss(single_batch$X, single_batch$y, as.numeric(GLM_beta))
+```
