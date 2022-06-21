@@ -1,6 +1,14 @@
 ---
 title: "Untitled"
-format: html
+execute: 
+  freeze: true
+  eval: false
+format:
+  html:
+    highlight: true
+    code-fold: show
+    code-tools: true
+    highlight-style: github
 ---
 
 ## Possible Variations

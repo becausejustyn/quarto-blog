@@ -1,11 +1,14 @@
 ---
 title: Quarto Computations
+execute: 
+  freeze: true
+  eval: false
 format:
   html:
-    code-fold: true
+    highlight: true
+    code-fold: show
     code-tools: true
     highlight-style: github
-    #code-tools: true
 jupyter: python3
 ---
 

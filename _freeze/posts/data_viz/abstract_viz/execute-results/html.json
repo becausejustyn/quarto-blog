@@ -1,0 +1,14 @@
+{
+  "hash": "073863acef508037fbaac0e96d624038",
+  "result": {
+    "markdown": "---\ntitle: \"Untitled\"\nexecute: \n  freeze: true\n  eval: false\nformat:\n  html:\n    highlight: true\n    code-fold: show\n    code-tools: true\n    highlight-style: github\n---\n\n\n## Some Abstract Data Viz\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(dplyr)\nlibrary(ggplot2)\nlibrary(ggforce)\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nset.seed(23479)\nn <- 25\ntibble(\n  x = runif(n),\n  y = runif(n)\n) %>%\n  ggplot(aes(x, y)) +\n  geom_voronoi_tile(aes(fill = y)) +\n  scale_fill_viridis_c(option = \"A\") +\n  theme_void() +\n  theme(legend.position = \"none\")\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nset.seed(23479)\nn <- 1000\ntibble(\n  x = runif(n), \n  y = runif(n)) %>%\n  ggplot(aes(x, y)) +\n  geom_voronoi_tile(aes(fill = y)) +\n  scale_fill_viridis_c(option = \"A\") +\n  theme_void() +\n  theme(legend.position = \"none\")\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nset.seed(23479)\nN <- 1000\ntibble(\n  x = runif(n, -1, 1), \n  y = sqrt(abs(x) + runif(n))) %>%\n  ggplot(aes(x, y)) +\n  geom_voronoi_tile(aes(fill = y)) +\n  scale_fill_viridis_c(option = \"E\") +\n  theme_void() +\n  theme(legend.position = \"none\")\n```\n:::",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

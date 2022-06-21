@@ -1,6 +1,14 @@
 ---
 title: "Untitled"
-format: html
+execute: 
+  freeze: true
+  eval: false
+format:
+  html:
+    highlight: true
+    code-fold: show
+    code-tools: true
+    highlight-style: github
 ---
 
 
@@ -292,9 +300,7 @@ weekly_team_win1 <- pbp %>%
   ) 
 ```
 
-```{stan output.var=}
-
-
+```
 data{
   int<lower=1> N_games; // number of games
   int<lower=1> N_teams; // number of teams

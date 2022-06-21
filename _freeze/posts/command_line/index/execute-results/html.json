@@ -1,0 +1,11 @@
+{
+  "hash": "61bf0cad2bd95d1379639be9354d4992",
+  "result": {
+    "markdown": "---\ntitle: \"Untitled\"\nexecute: \n  freeze: true\n  eval: false\nformat:\n  html:\n    highlight: true\n    code-fold: show\n    code-tools: true\n    highlight-style: github\n---\n\n# Command Line\n\ncreate new venv\n\n```{bash}\npython3 -m venv env\n```\n\n\nactivate it\n\n```{bash}\nsource env/bin/activate\n```\n\n\ninstalling packages\n\n```{bash}\npython3 -m pip install jupyter matplotlib pandas\n```\n\n\ndeactivate\n\n```{bash}\ndeactivate\n```\n\n",
+    "supporting": [
+      "index_files"
+    ],
+    "filters": [],
+    "includes": {}
+  }
+}

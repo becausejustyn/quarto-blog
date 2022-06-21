@@ -1,15 +1,25 @@
 ---
-title: "Untitled"
-format: html
+title: "Tidyverse Tips II"
+execute: 
+  freeze: true
+  eval: true
+format:
+  html:
+    highlight: true
+    code-fold: show
+    code-tools: true
+    highlight-style: github
 ---
 
 ```{r}
+#| output: false
 library(tidyverse)
 library(ggplot2)
-```
+library(gt)
+library(gtExtras)
 
-```{r}
-midwest <- tibble::as_tibble(midwest)
+midwest <- tibble(midwest)
+#midwest <- tibble::as_tibble(midwest)
 ```
 
 #### Selecting Columns
@@ -93,3 +103,11 @@ The `count()` function has a sort argument.
 midwest %>%
   count(category, sort = TRUE)
 ```
+
+:::{.callout-caution collapse="true"}
+## Session Info
+
+```{r}
+sessionInfo()
+```
+:::

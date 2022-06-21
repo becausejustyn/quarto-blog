@@ -1,6 +1,13 @@
 ---
 title: "Untitled"
-format: html
+execute: 
+  freeze: true
+format:
+  html:
+    highlight: true
+    code-fold: show
+    code-tools: true
+    highlight-style: github
 ---
 
 # Nifty Features with Quarto

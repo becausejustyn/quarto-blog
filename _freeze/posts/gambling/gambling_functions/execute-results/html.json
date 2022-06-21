@@ -1,0 +1,14 @@
+{
+  "hash": "a17764a7121dfc551b1ecdeffc4b9e51",
+  "result": {
+    "markdown": "---\ntitle: \"Untitled\"\nformat: html\n---\n\n\n# Gambling Functions\n\n\n::: {.cell}\n\n```{.r .cell-code}\nmoney_line <- function(fav, underdog) {\n  \n  require(dplyr)\n  \n  fav_odds = (fav * -1)\n  prob1 = fav_odds / (fav_odds + underdog)\n  prob2 = underdog / (fav_odds + underdog)\n  \n  fav_prob = prob1 %>% round(3)\n  underdog_prob = prob2 %>% round(3)\n  \n  return(glue::glue(\"Favourite odds: {fav_prob}\\n Underdog odds:{underdog_prob}\"))\n}\n\n# E.g. money_line(-130, 110)\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nmoney_line2 <- function(arg1, arg2) {\n  \n  fav = sort(c(arg1, arg2))[1]\n  underdog = sort(c(arg1, arg2))[2]\n    \n  fav_val = fav * -1\n  \n  fav_prob = fav_val / (fav_val + underdog)\n  \n  return(fav_prob %>% round(3))\n}\n\n# money_line2(-425, 351)\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nlogit <- function(p) { \n  out <- log(p/(1 - p))\n  return(out)\n}\n```\n:::",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

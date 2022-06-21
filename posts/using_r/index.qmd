@@ -8,7 +8,6 @@ format:
     code-fold: show
     code-tools: true
     highlight-style: github
-    #code-tools: true
 ---
 
 Uni starts back up soon so I thought it would be a good idea to brush up on my `python`. I have avoided using `python` since `R` is much more user friendly between `dplyr` and `ggplot2`. Now that RStudio has `python` computability via `reticulate` there is not really a good reason to completely avoid `python`. I think it is always good practice to get more comfortable with different languages, because sometimes you will need to do a task that is only available using a specific tool. Similarly, there are times when a group project works best when everybody is able to use a similar language.
@@ -23,11 +22,6 @@ As tempting as it might be to do all my data wrangling via `tidyverse`, I have b
 
 ```{r}
 #| eval: false
-install.packages("ggplot2")
-install.packages("dplyr")
-install.packages("purrr")
-
-#or simply
 install.packages("tidyverse")
 ```
 
@@ -35,14 +29,10 @@ install.packages("tidyverse")
 
 ```{python}
 #| eval: false
-!pip3 install seaborn
-!pip3 install numpy
-!pip3 install pandas
+!python3 -m pip install pandas seaborn numpy
 
 #You can also install these packages in the terminal 
-pip3 install seaborn
-pip3 install numpy
-pip3 install pandas
+python3 -m pip install pandas seaborn numpy
 ```
 :::
 
@@ -57,6 +47,7 @@ I have hidden the output of the code, however, you can view it by clicking the d
 ### R
 
 ```{r}
+#| warning: false
 library(dplyr)
 library(ggplot2)
 
@@ -126,10 +117,7 @@ One of the confusing things are first is that there are many similar functions u
 ### R
 
 ```{r}
-#select(df, color, cut)
-
-df %>%
-  select(color, cut)
+select(df, color, cut)
 ```
 
 ### Python
@@ -168,8 +156,7 @@ df.loc[:, 'x':'z']
 ### R
 
 ```{r}
-df %>% 
-  select(color, cut)
+select(df, color, cut)
 ```
 
 ### Python
@@ -308,6 +295,12 @@ df %>%
   summarise(across(where(is.numeric), n_distinct))
 ```
 
+```{r}
+#| echo: false
+#| output: true
+purrr::map_df(df, ~sum(n_distinct(.)))
+```
+
 ### Python
 
 ```{python}
@@ -331,6 +324,12 @@ df.agg(['count', 'size', 'nunique'])
 df.select_dtypes(include = np.number).value_counts(normalize = True)
 #or
 df.select_dtypes('number').value_counts(normalize = True)
+```
+
+```{python}
+#| echo: false
+#| output: true
+df.nunique()
 ```
 
 :::

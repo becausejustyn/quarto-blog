@@ -1,6 +1,14 @@
 ---
 title: "Untitled"
-format: html
+execute: 
+  freeze: true
+  eval: false
+format:
+  html:
+    highlight: true
+    code-fold: show
+    code-tools: true
+    highlight-style: github
 ---
 
 I have been planning on writing a post for a few weeks, but I keep changing my mind on what I want to write about. I have been going through my Github profile lately and tidying it up. It has made me realise how much code I had stashed away that I did not need, so I am trying to get into the habit of only keeping code that is available on Github to keep organised and accountable. 
