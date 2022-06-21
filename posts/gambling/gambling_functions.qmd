@@ -1,0 +1,47 @@
+---
+title: "Untitled"
+format: html
+---
+
+# Gambling Functions
+
+```{r}
+money_line <- function(fav, underdog) {
+  
+  require(dplyr)
+  
+  fav_odds = (fav * -1)
+  prob1 = fav_odds / (fav_odds + underdog)
+  prob2 = underdog / (fav_odds + underdog)
+  
+  fav_prob = prob1 %>% round(3)
+  underdog_prob = prob2 %>% round(3)
+  
+  return(glue::glue("Favourite odds: {fav_prob}\n Underdog odds:{underdog_prob}"))
+}
+
+# E.g. money_line(-130, 110)
+```
+
+```{r}
+money_line2 <- function(arg1, arg2) {
+  
+  fav = sort(c(arg1, arg2))[1]
+  underdog = sort(c(arg1, arg2))[2]
+    
+  fav_val = fav * -1
+  
+  fav_prob = fav_val / (fav_val + underdog)
+  
+  return(fav_prob %>% round(3))
+}
+
+# money_line2(-425, 351)
+```
+
+```{r}
+logit <- function(p) { 
+  out <- log(p/(1 - p))
+  return(out)
+}
+```
