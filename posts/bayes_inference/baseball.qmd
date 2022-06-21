@@ -1,0 +1,145 @@
+---
+title: "Untitled"
+format: html
+---
+
+# Bayes Ball
+
+```{python}
+# https://bookdown.org/content/927/james-stein.html
+# https://bayesball.github.io/BOOK/simulation-by-markov-chain-monte-carlo.html
+import pandas as pd
+import numpy as np
+```
+
+```{python}
+df = pd.read_csv('/content/drive/MyDrive/Colab Notebooks/data/lahman.csv')
+df.head()
+```
+
+```{python}
+df = (df
+ .query('yearID == 2018')
+ .filter(['playerID', 'G', 'AB', 'H'])
+ .groupby('playerID')
+ .agg('mean')
+ )
+
+df['batting_avg'] = np.where(
+    pd.isna(df['H']/df['AB']), 0, df['H']/df['AB']
+)
+```
+
+```{python}
+df.head()
+```
+
+```{python}
+df.info
+```
+
+```{python}
+def james_stein_est(batting_avg, at_bats):
+  """
+  James-Stein Estimator for BA
+  paper link: https://www.jstor.org/stable/24954030?seq=1
+  batting_avg: vector of batting averages
+  at_bats: vector of number of bats
+  """
+
+  if len(batting_avg) != len(at_bats):
+    raise Exception('✨✨ Both vectors should be the sane length 😭')
+
+  #which players were in at least the 50th percentile of at bats
+  percentile_50 = at_bats >= np.percentile(at_bats, 50)
+
+  # get group mean & sd of BA for for players who were at least in the 
+  # 50th percentile of at bats
+  group_mean = np.mean(batting_avg[percentile_50])
+  group_sd = np.std(batting_avg[percentile_50])
+
+  # calc sum squares of players difference from group mean
+  sum_sq_diff = sum((batting_avg - group_mean)**2)
+
+  # calc c
+  c = 1 - ((len(at_bats) - 3) * group_sd**2) / sum_sq_diff
+
+  # given players measured BA and C, what is their estimated BA
+  js_estimate = group_mean + c * (batting_avg - group_mean)
+
+  return(js_estimate)
+```
+
+```{python}
+df2 = df.copy()
+
+# df2 = df2.assign(james_stein = james_stein_est(df2['batting_avg'], df2['AB']))
+df2['james_stein'] = james_stein_est(df2['batting_avg'], df2['AB'])
+
+"""
+df2 = (df2
+ .assign(js_sd = np.where(
+     df2['AB'] == 0,
+     np.sqrt((df2['james_stein'] * (1 - df2['james_stein'])) / 1), 
+     np.sqrt((df2['james_stein'] * (1 - df2['james_stein'])) / df2['AB'])
+     )
+ )
+)
+"""
+
+df2['js_sd'] = np.where(
+    df2['AB'] == 0,
+    np.sqrt((df2['james_stein'] * (1 - df2['james_stein'])) / 1), 
+    np.sqrt((df2['james_stein'] * (1 - df2['james_stein'])) / df2['AB'])
+)
+
+df2['low'] = np.where(df2['james_stein'] - df2['js_sd'] < 0, 0, df2['james_stein'] - df2['js_sd'])
+df2['high'] = df2['james_stein'] + df2['js_sd']
+
+"""
+df2 = (df2
+ .assign(
+     low = np.where(df2['james_stein'] - df2['js_sd'] < 0, 0, df2['james_stein'] - df2['js_sd']),
+     high = df2['james_stein'] + df2['js_sd']
+ ))  
+"""
+
+
+df2.head()
+```
+
+```{python}
+# add player info
+
+people = pd.read_csv('/content/drive/MyDrive/Colab Notebooks/data/bb_people.csv')
+
+people['name'] = people['nameFirst'].str.cat(people['nameLast'], sep=' ')
+people = people.filter(['playerID', 'name'])
+
+"""
+people = (people
+          .assign(name = people['nameFirst'].str.cat(people['nameLast'], sep=' '))
+          .filter(['playerID', 'name'])
+          )
+"""
+
+df3 = df2.copy()
+df3 = df3.reset_index()
+df3 = df3.merge(people, on='playerID', how='left')
+```
+
+```{python}
+df3.sort_values('batting_avg', ascending = False).reset_index()
+```
+
+```{python}
+
+```
+
+```{python}
+
+```
+
+```{python}
+
+```
