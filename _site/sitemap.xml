@@ -30,7 +30,7 @@
   </url>
   <url>
     <loc>https://www.myblogexample.io/posts/barplots/index.html</loc>
-    <lastmod>2022-06-21T09:48:24.204Z</lastmod>
+    <lastmod>2022-06-21T13:46:26.153Z</lastmod>
   </url>
   <url>
     <loc>https://www.myblogexample.io/posts/nfl_hfa/index.html</loc>
@@ -38,7 +38,7 @@
   </url>
   <url>
     <loc>https://www.myblogexample.io/posts/reticulate/index.html</loc>
-    <lastmod>2022-06-21T10:03:27.049Z</lastmod>
+    <lastmod>2022-06-21T13:46:26.830Z</lastmod>
   </url>
   <url>
     <loc>https://www.myblogexample.io/posts/data_viz/abstract_viz.html</loc>
@@ -78,10 +78,18 @@
   </url>
   <url>
     <loc>https://www.myblogexample.io/posts/tidyverse_tricks_i/index.html</loc>
-    <lastmod>2022-06-21T10:34:43.220Z</lastmod>
+    <lastmod>2022-06-21T13:46:25.349Z</lastmod>
   </url>
   <url>
     <loc>https://www.myblogexample.io/posts/tidyverse_tricks_ii/index.html</loc>
-    <lastmod>2022-06-21T10:31:13.819Z</lastmod>
+    <lastmod>2022-06-21T13:24:39.235Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.myblogexample.io/posts/combinations_vs_permutation/index.html</loc>
+    <lastmod>2022-06-21T13:21:38.090Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.myblogexample.io/posts/python_in_rstudio/index.html</loc>
+    <lastmod>2022-06-21T13:46:28.444Z</lastmod>
   </url>
 </urlset>

@@ -2,7 +2,7 @@
 title: "Untitled"
 execute: 
   freeze: true
-  eval: false
+  eval: true
 format:
   html:
     highlight: true
@@ -24,12 +24,15 @@ write_csv(pbp, "buf_vs_kc.csv")
 ```
 
 ```{python}
+#| eval: false
+# if you have nflfastpy installed you can use it to load the data
 data = pd.concat(
     [nfl.load_pbp_data(season).assign(season = season) for season in range(1999, 2021)]
 )
+```
 
-#if you do not want to install nflfastpy
-
+```{python}
+#| eval: false
 # Read in data
 YEAR = 2021
 
@@ -42,6 +45,7 @@ data = pd.read_csv(
 However, I am using python via `reticulate` for this, so I could easily load the data through R and then send it over to python.
 
 ```{r}
+#| eval: false
 pbp <- purrr::map_df(c(2010:2021), function(x) {
   readRDS(
       glue::glue("https://raw.githubusercontent.com/guga31bb/nflfastR-data/master/data/play_by_play_{x}.rds")

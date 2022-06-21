@@ -43,8 +43,9 @@ midwest %>%
 #### Reformatting All Column Names
 
 ```{r}
+#could also use tolower()
 midwest %>%
-  select_all(toupper) #could also use tolower()
+  select_all(toupper) 
 ```
 
 ### Cleaning Column Names
@@ -54,8 +55,8 @@ midwest %>%
 midwest2 <- midwest %>%
   select(poptotal, popother, county, percbelowpoverty, category)
 
-colnames(midwest2) <- c("pop total", "pop other", "county", "perc below poverty", "category")
-
+colnames(midwest2) <- c("pop total", "pop other", 
+                        "county", "perc below poverty", "category")
 
 midwest2 %>%
   select_all(~str_replace(., " ", "_"))
@@ -103,6 +104,8 @@ The `count()` function has a sort argument.
 midwest %>%
   count(category, sort = TRUE)
 ```
+
+This was just a quick one. I think better examples are when you do a project, so I will display more complex situations later on.
 
 :::{.callout-caution collapse="true"}
 ## Session Info

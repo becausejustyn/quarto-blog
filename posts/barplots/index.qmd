@@ -1,8 +1,8 @@
 ---
-title: "Untitled"
+title: "Bar Plots"
 execute: 
   freeze: true
-  eval: false
+  eval: true
 format:
   html:
     highlight: true
@@ -16,11 +16,13 @@ I have been planning on writing a post for a few weeks, but I keep changing my m
 I have also been doing a lot of NFL data viz, which I found a lot harder than I thought it would be. I'll share them at a later date, but I thought I would do a quick post at 11pm at some tricks I learnt with using text labels. I thought I would use the penguins dataset from `palmerpenguins` since it does not appear to be as common as others such as `mtcars`.
 
 ```{r}
+#| warning: false
 library(palmerpenguins)
 library(tidyverse)
 library(janitor)
 library(gt)
-library(becausejustynfun) #personal package with plotting theme
+#personal package with plotting theme
+library(becausejustynfun) 
 
 penguins <- palmerpenguins::penguins
 ```
@@ -208,7 +210,10 @@ You can use different positions of text labels to highlight things of interest, 
 
 That is all for today. I'll try to post next week about more data viz.
 
+:::{.callout-caution collapse="true"}
+## Session Info
+
 ```{r}
 sessionInfo()
 ```
-
+:::

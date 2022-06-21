@@ -2,7 +2,7 @@
 title: "Untitled"
 execute: 
   freeze: true
-  eval: false
+  eval: true
 format:
   html:
     highlight: true
@@ -132,13 +132,21 @@ and `8 characters`
 If you want to calculate these values in `R` you can simply do it via
 
 ```{r}
+#| warning: false
 library(tidyverse)
+library(gt)
 
-crossing(
-  # total characters 
-  character_n = c(26, 36, 52, 62, 74),
+tibble(
+  # this will have each of the n characters repeat by 5
+  # before the next one starts
+  # total possible characters
+  'Character n' = rep(c(26, 36, 52, 62, 74), each = 5),
+  # whereas this approach will repeat the vector in that order
   # password length
-  length = c(6, 7, 8, 10, 12), 
-  possible_values = character_n ^ length
-)
+  Length = rep(c(6, 7, 8, 10, 12), 5), 
+  'Possible Values' = `Character n` ^ Length
+) %>%
+  gt() %>%
+  tab_options(container.height = '500px') %>%
+  fmt_number(columns = 3, decimals = 0)
 ```

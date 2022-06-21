@@ -1,8 +1,8 @@
 ---
-title: "Untitled"
+title: "NFL Game Excitement"
 execute: 
   freeze: true
-  eval: false
+  eval: true
 format:
   html:
     highlight: true
@@ -13,16 +13,16 @@ format:
 
 
 ```{r}
+library(tidyverse)
 library(gt)
+library(gtExtras)
 ```
 
-
-GT Table with Game Excitment
-
+I have the data on my local machine, but you can also load it with `nflfastR`.
 ```{r}
-play_by_play_2021 <- read_rds("Documents/nfl/data/pbp/play_by_play_2021.rds")
+#nflfastr::load_pbp(2021)
+pbp <- read_rds("~/Documents/nfl/data/pbp/play_by_play_2021.rds")
 ```
-
 
 ### Game Excitement Index  
 
@@ -34,24 +34,14 @@ $$
 
 `https://sports.sites.yale.edu/game-excitement-index-part-ii`
 
-```{python}
-#Calculate average length of 2019 games for use in our function
-avg_length = data.groupby(by = ['game_id'])['epa'].count().mean()
-
-def calc_gei(game_id):
-  game = data[(data['game_id']==game_id)]
-  #Length of game
-  length = len(game)
-  #Adjusting for game length
-  normalize = avg_length / length
-  #Get win probability differences for each play
-  win_prob_change = game['home_wp'].diff().abs()
-  #Normalization
-  gei = normalize * win_prob_change.sum()
-  return gei
-```
-
 ```{r}
+avg_length <- pbp %>%
+  group_by(game_id) %>%
+  count() %>%
+  ungroup() %>%
+  summarise(mean(n)) %>%
+  pull()
+
 calc_gei <- function(data, this_game_id){
   game = filter(data, game_id == this_game_id)
   length = length(game)
@@ -62,45 +52,47 @@ calc_gei <- function(data, this_game_id){
   gei = normalise * win_prob_change %>% sum()
   return(gei)
 }
+```
 
+```{r}
 pbp %>%
   calc_gei('2021_20_BUF_KC')
+```
 
-play_by_play_2021 %>%
+```{r}
+#| eval: false
+pbp %>%
   filter(game_id == '2021_20_BUF_KC') %>%
   summarise(
     normalise = avg_length / length(game_id),
     win_prob_change = diff(home_wp) %>% abs(),
     gei = normalise * win_prob_change %>% sum(na.rm = TRUE)
   )
-
-calc_gei <- function(data, this_game_id){
-  game = filter(data, game_id == this_game_id)
-  length = length(game)
-  normalise = avg_length / length
-  #Get win probability differences for each play
-  win_prob_change = select(pbp, home_wp) %>% lag()
-  #Normalization
-  gei = normalise * win_prob_change %>% sum()
-  return(gei)
-}
 ```
 
 ```{r}
 #Calculate average length of 2019 games for use in our function
 #avg_length = data.groupby(by = ['game_id'])['epa'].count().mean()
 
-avg_length <- play_by_play_2021 %>%
+avg_length <- pbp %>%
   group_by(game_id) %>%
   count() %>%
   ungroup() %>%
   summarise(mean(n)) %>%
   pull()
+
+pbp %>%
+  filter(game_id == '2021_20_BUF_KC') %>%
+  summarise(
+    normalise = avg_length / length(game_id),
+    win_prob_change = diff(home_wp) %>% abs(),
+    gei = normalise * win_prob_change %>% sum(na.rm = TRUE)
+  )
 ```
 
 
 ```{r}
-gei_games <- play_by_play_2021 %>%
+gei_games <- pbp %>%
   group_by(game_id) %>%
   summarise(
     normalise = avg_length / length(game_id),
@@ -112,12 +104,12 @@ gei_games <- play_by_play_2021 %>%
 ```
 
 ```{r}
-gei_joined <- play_by_play_2021 %>%
+gei_joined <- pbp %>%
   select(game_id, home_team, away_team, week) %>%
   distinct(game_id, .keep_all = TRUE) %>%
   left_join(gei_games)
 
-lead_changes <- play_by_play_2021 %>%
+lead_changes <- pbp %>%
   group_by(game_id) %>%
   mutate(
     team_leading = case_when(
@@ -171,7 +163,7 @@ gei_joined %>%
   tab_source_note(
     source_note = md("Data: nflfastR<br>TABLE: @becausejustyn")
   ) %>% 
-  gt_theme_538_v2(table.width = px(550))
+  gt_theme_538(table.width = px(550))
 ```
 
 Philly vs LAC was the only game with 10 lead changes that was not in the top 15 for GEI, likewise, NYG vs WAS was not in the top 15 despite 9 lead changes, however, that is excused 
@@ -212,7 +204,7 @@ gei_joined %>%
 ```
 
 ```{r}
-gei_joined <- play_by_play_2021 %>%
+gei_joined <- pbp %>%
   select(game_id, home_team, away_team, week, home_score, away_score) %>%
   distinct(game_id, .keep_all = TRUE) %>%
   left_join(gei_games)
@@ -227,7 +219,7 @@ gei_joined <- play_by_play_2021 %>%
 
 
 ```{r}
-play_by_play_2021 %>%
+pbp %>%
   filter(between(wp, .3, .7)) %>%
   group_by(game_id) %>%
   mutate(fun = length(game_id)) %>%

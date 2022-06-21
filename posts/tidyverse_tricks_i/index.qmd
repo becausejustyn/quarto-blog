@@ -30,14 +30,15 @@ The data was originally from Kaggle [^1].
 :::
 
 ```{r}
-cereal <- read_delim("https://github.com/becausejustyn/blog/raw/main/content/post/2021-07-12-tidyverse-tips/cereal.txt",
-                     delim = "\t", 
-                     col_types = cols(
-                       type = readr::col_factor(levels = NULL),
-                       mfr = readr::col_factor(levels = NULL)
-                       ),
-                     escape_double = FALSE, 
-                     trim_ws = TRUE)
+cereal <- read_delim(
+  'https://github.com/becausejustyn/blog/raw/main/content/post/2021-07-12-tidyverse-tips/cereal.txt',
+  delim = "\t", 
+  col_types = cols(
+    type = readr::col_factor(levels = NULL),
+    mfr = readr::col_factor(levels = NULL)
+    ),
+    escape_double = FALSE,
+    trim_ws = TRUE)
 ```
 
 ```{r}
@@ -55,7 +56,8 @@ cereal1 <- cereal %>%
   rowwise() %>% 
   mutate(
     kids_rating = sample(c("A", "B", "C", NA), 1, replace = TRUE),
-    adult_rating = sample(c("A", "B", "C", NA), 1, replace = TRUE, prob = c(0.1, 0.3, 0.5, 0.1))
+    adult_rating = sample(c(
+      "A", "B", "C", NA), 1, replace = TRUE, prob = c(0.1, 0.3, 0.5, 0.1))
       )
 ```
 
@@ -71,8 +73,7 @@ cereal1 <- cereal %>%
 
 ```{r}
 cereal1 %>%
-  summarise(across(everything(), 
-                   ~sum(is.na(.)))) %>%
+  summarise(across(everything(), ~sum(is.na(.)))) %>%
   colSums() 
 ```
 
@@ -90,8 +91,8 @@ Missing values in the `adult_rating` column.
 cereal1 %>%
   filter(if_any(adult_rating, is.na)) %>%
   gt() %>% 
-    tab_options(container.height = '500px') %>%
-    gt_theme_538() 
+  tab_options(container.height = '500px') %>%
+  gt_theme_538() 
 ```
 
 ### Selection Helpers
@@ -116,18 +117,14 @@ cereal1 %>%
   select(contains("_rating")) 
 ```
 
-```{r}
-cereal3 <- cereal1 %>%
-  ungroup()
-```
-
 ### Distinct Column Values
 
 You can select multiple columns by putting them in `c()` and then calling `n_distinct`
 
 ```{r}
-cereal3 %>%
-  summarise(across(c(mfr, type, kids_rating, adult_rating), n_distinct))
+(cereal3 <- cereal1 %>%
+  ungroup() %>%
+  summarise(across(c(mfr, type, kids_rating, adult_rating), n_distinct)))
 ```
 
 If you just want to see the values for every column you can use `everything()`
@@ -174,18 +171,21 @@ cereal %>%
 Within one `mutate()` call you can create multiple columns with a comma.
 
 ```{r}
-set.seed(2017) #reproducibility 
+#reproducibility 
+set.seed(2017) 
 cereal2 <- cereal %>%
-  rowwise() %>% #so sample iterates for each row
+  #so sample iterates for each row
+  rowwise() %>% 
   mutate(
     kids_rating = sample(c("A", "B", "C", NA), 1, replace = TRUE),
-    adult_rating = sample(c("A", "B", "C", NA), 1, replace = TRUE, prob = c(0.1, 0.3, 0.5, 0.1))
+    adult_rating = sample(c(
+      "A", "B", "C", NA), 1, replace = TRUE, prob = c(0.1, 0.3, 0.5, 0.1))
       )
 
 cereal2 %>%
   gt() %>% 
-    tab_options(container.height = '500px') %>%
-    gt_theme_538() 
+  tab_options(container.height = '500px') %>%
+  gt_theme_538() 
 ```
 
 To only show the rows without a condition such as missing values we use `filter()` with `!` in front of the value, e.g. `is.na()`
@@ -194,8 +194,8 @@ To only show the rows without a condition such as missing values we use `filter(
 cereal2 %>%
   filter(!is.na(adult_rating)) %>%
   gt() %>% 
-    tab_options(container.height = '500px') %>%
-    gt_theme_538() 
+  tab_options(container.height = '500px') %>%
+  gt_theme_538() 
 ```
 
 ### Negative Values
@@ -229,8 +229,8 @@ cereal2 %>%
   mutate(random_values = runif(1, min = -1, max = 1), .after = name) %>%
   filter(if_any(where(is.numeric), ~ .x < 0)) %>%
   gt() %>% 
-    tab_options(container.height = '500px') %>%
-    gt_theme_538() 
+  tab_options(container.height = '500px') %>%
+  gt_theme_538() 
 ```
 
 ### %in% operator
