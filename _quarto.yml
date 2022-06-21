@@ -15,7 +15,7 @@ website:
         href: index.xml 
 format:
   html:
-    theme: Superhero
+    theme: Superhero #Darkly
     css: styles.css
 
 
