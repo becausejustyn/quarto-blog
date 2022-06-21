@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://www.myblogexample.io/posts/my_first_post/index.html</loc>
+    <lastmod>2022-06-21T04:17:14.362Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.myblogexample.io/posts/post-with-code/index.html</loc>
+    <lastmod>2022-06-21T04:12:49.809Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.myblogexample.io/posts/welcome/index.html</loc>
+    <lastmod>2022-06-21T04:12:50.097Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.myblogexample.io/about.html</loc>
+    <lastmod>2022-06-21T05:13:14.775Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.myblogexample.io/posts/my_first_post/computations.html</loc>
+    <lastmod>2022-06-21T04:56:09.358Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.myblogexample.io/posts/using_r/index.html</loc>
+    <lastmod>2022-06-21T06:32:37.442Z</lastmod>
+  </url>
+</urlset>

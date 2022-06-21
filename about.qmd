@@ -1,0 +1,18 @@
+---
+title: "About"
+image: profile.jpg
+about:
+  template: broadside
+  links:
+    - icon: twitter
+      text: Twitter
+      href: https://twitter.com/becausejustyn
+    - icon: github
+      text: Github
+      href: https://github.com/becausejustyn
+
+---
+
+## About this blog
+
+This is the contents of the about page for my blog.

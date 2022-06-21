@@ -1,0 +1,399 @@
+---
+title: "Trying R"
+execute: 
+  freeze: true
+format:
+  html:
+    highlight: true
+    code-fold: show
+    code-tools: true
+    highlight-style: github
+    #code-tools: true
+---
+
+Uni starts back up soon so I thought it would be a good idea to brush up on my `python`. I have avoided using `python` since `R` is much more user friendly between `dplyr` and `ggplot2`. Now that RStudio has `python` computability via `reticulate` there is not really a good reason to completely avoid `python`. I think it is always good practice to get more comfortable with different languages, because sometimes you will need to do a task that is only available using a specific tool. Similarly, there are times when a group project works best when everybody is able to use a similar language.
+
+As tempting as it might be to do all my data wrangling via `tidyverse`, I have been practising using pandas. This post was entirely written in RStudio, however, the `python` code will run in a notebook alternative such as Jupyter or VS Code. 
+
+### Installing Packages 
+
+::: {.panel-tabset}
+
+### R
+
+```{r}
+#| eval: false
+install.packages("ggplot2")
+install.packages("dplyr")
+install.packages("purrr")
+
+#or simply
+install.packages("tidyverse")
+```
+
+### Python
+
+```{python}
+#| eval: false
+!pip3 install seaborn
+!pip3 install numpy
+!pip3 install pandas
+
+#You can also install these packages in the terminal 
+pip3 install seaborn
+pip3 install numpy
+pip3 install pandas
+```
+:::
+
+Learning `python` was overwhelming because you use the terminal much more often than you need to when using `R`. Over time, I have began to appreciate using a virtual environment because you can easily run multiple versions of `python`, which makes it more practical when you are using a package that requires an older version. 
+
+### Importing Data, Loading Libraries
+
+I have hidden the output of the code, however, you can view it by clicking the dropdown menu. I did this primarily for myself so it was easier to scroll down, but I think it is also more practical since the output is not necessarily the focus of this post.
+
+::: {.panel-tabset}
+
+### R
+
+```{r}
+library(dplyr)
+library(ggplot2)
+
+df <- diamonds
+
+df %>% head()
+```
+
+### Python
+
+```{python}
+import seaborn as sns
+import numpy as np
+import pandas as pd
+sns.set_style('white')
+
+df = sns.load_dataset('diamonds')
+
+df.head()
+```
+
+:::
+
+### Example of Functions
+
+::: {.panel-tabset}
+
+### Verbs
+
+|                            dplyr |                           pandas |
+|---------------------------------:|---------------------------------:|
+|         `filter()` and `slice()` |  `query()` and `loc[]`, `iloc[]` |
+|                      `arrange()` | `sort_values` and `sort_index()` |
+|        `select()` and `rename()` |     `__getitem__` and `rename()` |
+|                       `select()` |                       `filter()` |
+|                     `distinct()` |              `drop_duplicates()` |
+|                       `mutate()` |                         `assign` |
+|                    `summarise()` |                            `agg` |
+|                     `group_by()` |                      `groupby()` |
+| `sample_n()` and `sample_frac()` |                         `sample` |
+|                            `%>%` |                       `pipe[^1]` |
+
+### Example
+
+|                                           dplyr |                                       pandas |
+|------------------------------------------------:|---------------------------------------------:|
+|                 `filter(df, col == 'val')`      |                   `df.query('col == "val"')` |
+|                         `arrange(df, col)`      |                      `df.sort_values('val')` |
+|           `rename(df, new_name = old_name)`     | `df.rename(columns = {old_name = new_name})` |
+|                           `select(df, col)`     |                              `df.loc['val']` |
+|           `distinct(df, col, .keep_all = TRUE)` |              `df[['val']].drop_duplicates()` |
+|                  `mutate(new_var = col - col2)` |      `df.assign(new_var = df.col - df.col2)` |
+| `summarise(mean = mean(col2), n = count(col1))` |  `df.agg({"col1": "count", "col2", "mean"})` |
+|                             `group_by(df, col)` |                          `df.groupby('col')` |
+|                                           `%>%` |                                   `pipe[^1]` |
+
+:::
+
+[^1]: To the best of my knowledge, you can still pipe without using the function, however, I have not explored it that much.
+
+One of the confusing things are first is that there are many similar functions under different names. I personally find it easier to remember them by the way I write my code. For example, by only using `<-` as an assignment operator in `R`, I find it easier to treat the two languages differently. 
+
+### Selecting Columns
+
+::: {.panel-tabset}
+
+### R
+
+```{r}
+#select(df, color, cut)
+
+df %>%
+  select(color, cut)
+```
+
+### Python
+
+```{python}
+df.filter(['color', 'cut'])
+
+#or
+#df[['color', 'cut']]
+```
+
+:::
+
+### If we want to select a range of columns
+
+::: {.panel-tabset}
+
+### R
+
+```{r}
+select(df, x:z)
+```
+
+### Python
+
+```{python}
+df.loc[:, 'x':'z']
+```
+
+:::
+
+### If we want to pipe it 
+
+::: {.panel-tabset}
+
+### R
+
+```{r}
+df %>% 
+  select(color, cut)
+```
+
+### Python
+
+```{python}
+(df
+.filter(['color', 'cut'])
+)
+```
+
+:::
+
+### If we want to drop a certain column
+
+::: {.panel-tabset}
+
+### R
+
+```{r}
+select(df, -(x:z))
+```
+
+### Python
+
+```{python}
+(df
+.drop(['x', 'y', 'z'], axis = 1)
+)
+```
+
+:::
+
+### filtering on one condition
+
+::: {.panel-tabset}
+
+### R
+
+```{r}
+filter(df, color == 'E')
+```
+
+### Python
+
+```{python}
+(df
+.query("color == 'E'")
+)
+```
+
+:::
+
+### If we want multiple conditions
+
+::: {.panel-tabset}
+
+### R
+
+```{r}
+filter(df, color == 'E', cut == 'Good')
+
+#or
+#filter(df, color == 'E' & cut == 'Good')
+```
+
+### Python
+
+```{python}
+(df
+.query('color == "E" & cut == "Good"')
+)
+```
+
+:::
+
+### If we want multiple conditions in one column
+
+::: {.panel-tabset}
+
+### R
+
+```{r}
+df %>% 
+    filter(color %in% c('E', 'J'))
+```
+
+### Python
+
+```{python}
+(df
+.query('color in ["E", "J"]')
+)
+```
+
+:::
+
+### Count Missing Values
+
+::: {.panel-tabset}
+
+### R
+
+```{r}
+# sum of missing values in each column
+df %>% 
+  summarise(across(everything(), ~sum(is.na(.))))
+
+#purrr::map_df(df, ~sum(is.na(.)))
+```
+
+### Python
+
+```{python}
+df.isna().sum()
+```
+
+:::
+
+### Count Unique Values in Each Column 
+
+::: {.panel-tabset}
+
+### R
+
+```{r}
+#| eval: false
+# getting the count of unique values in each column 
+df %>% 
+  summarise(across(everything(), n_distinct))
+
+#can also map across for the same result
+purrr::map_df(df, ~sum(n_distinct(.)))
+
+# if you just want numerical columns
+df %>% 
+  summarise(across(where(is.numeric), n_distinct))
+```
+
+### Python
+
+```{python}
+#| eval: false
+df.nunique()
+
+# If you want unique values in numeric columns
+df.select_dtypes(include = np.number).nunique()
+#or
+df.select_dtypes('number').nunique()
+
+# If you just want the column names of numeric type
+df.select_dtypes('number').columns
+# If you want them as a list
+df.select_dtypes(include = np.number).columns.tolist()
+
+# count and unique values
+df.agg(['count', 'size', 'nunique'])
+
+#for the proportions
+df.select_dtypes(include = np.number).value_counts(normalize = True)
+#or
+df.select_dtypes('number').value_counts(normalize = True)
+```
+
+:::
+
+### Complex Pipings
+
+::: {.panel-tabset}
+
+### R
+
+```{r}
+df %>%
+  select(starts_with('c')) %>%
+  filter(cut %in% c('Ideal', 'Premium')) %>%
+  group_by(cut, color, clarity) %>%
+  summarise(
+    avgcarat = mean(carat, na.rm=TRUE),
+    n = n()
+    ) %>%
+  arrange(-avgcarat) %>% #desc(avgcarat) also works
+  head()
+```
+
+### Python
+
+```{python}
+(df
+ .filter(regex = '^c')
+ .query('cut in ["Ideal", "Premium"]')
+ .groupby(['cut', 'color', 'clarity'])
+ .agg(['mean', 'size'])
+ .sort_values(by = ('carat', 'mean'), ascending = False)
+ .head())
+```
+
+:::
+
+### More Examples
+
+#### Transforming
+
+| R                                | pandas                                                |
+|----------------------------------|-------------------------------------------------------|
+| `select(df, col_one = col1)`     | `df.rename(columns = {'col1': 'col_one'})['col_one']` |
+| `rename(df, col_one = col1)[^2]` | `df.rename(columns = {'col1': 'col_one'})`            |
+| `mutate(df, c = a - b)`          | `df.assign(c = df['a'] - df['b'])`                    |
+
+[^2]: You can achieve the same result with `select()`. However, `rename()` can be helpful if you do not want to drop or add, or relocate columns.
+
+#### Sorting
+
+| R                                | pandas                                      |
+|----------------------------------|---------------------------------------------|
+| `arrange(df, col1, col2)`        | `df.sort_values(['col1', 'col2'])`          |
+| `arrange(df, desc(col1))[^3]`    | `df.sort_values('col1', ascending = False)` |
+
+[^3]: I personally prefer using `arrange(df, -col1)`
+
+#### Grouping and Summarising
+
+| R                                                                  | pandas                                      |
+|--------------------------------------------------------------------|---------------------------------------------|
+| `summary(df)`                                                      | `df.describe()`                             |
+| `group_by(df, col1)`                                               | `df.groupby('col1')`                        |
+| `group_by(df, col1) %>% summarise(avg = mean(col1, na.rm = TRUE))` | `df.groupby('col1').agg({'col1' : 'mean'})` |
+| `group_by(df, col1) %>% summarise(total = sum(col1))`              | `df.groupby('col1').sum()`                  |
