@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-0.9.600">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>quarto-blog - Untitled</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">quarto-blog</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"><i class="bi bi-rss" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Untitled</h1>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<section id="nfl-target-shares" class="level1">
+<h1>NFL Target Shares</h1>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> bs4 <span class="im">import</span> BeautifulSoup <span class="im">as</span> BS</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> yearly_stats(season<span class="op">=</span><span class="dv">2020</span>):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    BASE_URL <span class="op">=</span> <span class="ss">f"https://www.pro-football-reference.com/years/</span><span class="sc">{</span>season<span class="sc">}</span><span class="ss">/fantasy.htm"</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    res <span class="op">=</span> requests.get(BASE_URL)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    soup <span class="op">=</span> BS(res.content, <span class="st">'html.parser'</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    table <span class="op">=</span> soup.find(<span class="st">'table'</span>, {<span class="st">'id'</span>: <span class="st">'fantasy'</span>})</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.read_html(<span class="bu">str</span>(table))[<span class="dv">0</span>]</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    df.columns <span class="op">=</span> df.columns.droplevel(level<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'PassingTD'</span>] <span class="op">=</span> df[<span class="st">'TD'</span>].iloc[:, <span class="dv">0</span>]</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'PassingYds'</span>] <span class="op">=</span> df[<span class="st">'Yds'</span>].iloc[:, <span class="dv">0</span>]</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'RushingTD'</span>] <span class="op">=</span> df[<span class="st">'Yds'</span>].iloc[:, <span class="dv">1</span>]</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'RushingYds'</span>] <span class="op">=</span> df[<span class="st">'Yds'</span>].iloc[:, <span class="dv">1</span>]</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'ReceivingTD'</span>] <span class="op">=</span> df[<span class="st">'TD'</span>].iloc[:, <span class="dv">2</span>]</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'ReceivingYds'</span>] <span class="op">=</span> df[<span class="st">'Yds'</span>].iloc[:, <span class="dv">2</span>]</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'PassingAtt'</span>] <span class="op">=</span> df[<span class="st">'Att'</span>].iloc[:, <span class="dv">0</span>]</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'RushingAtt'</span>] <span class="op">=</span> df[<span class="st">'Att'</span>].iloc[:, <span class="dv">1</span>]</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.rename({</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>        <span class="st">'FantPos'</span>: <span class="st">'Pos'</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    }, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df[[<span class="st">'Player'</span>, <span class="st">'Tm'</span>, <span class="st">'Pos'</span>, <span class="st">'Age'</span>, <span class="st">'PassingAtt'</span>, <span class="st">'Cmp'</span>, <span class="st">'PassingYds'</span>, <span class="st">'PassingTD'</span>, <span class="st">'RushingAtt'</span>, <span class="st">'RushingYds'</span>, <span class="st">'RushingTD'</span>, <span class="st">'Tgt'</span>, <span class="st">'Rec'</span>, <span class="st">'ReceivingYds'</span>, <span class="st">'ReceivingTD'</span>, <span class="st">'FL'</span>, <span class="st">'2PM'</span>]]</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.fillna(<span class="dv">0</span>)</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.loc[df[<span class="st">'Player'</span>] <span class="op">!=</span> <span class="st">'Player'</span>] </span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> column <span class="kw">in</span> df.columns[<span class="dv">4</span>:]:</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>        df[column] <span class="op">=</span> df[column].astype(<span class="bu">int</span>)</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_top_target_share(df, pos<span class="op">=</span><span class="st">'WR'</span>, min_receptions<span class="op">=</span><span class="dv">0</span>, n<span class="op">=</span><span class="dv">100</span>):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.merge(df.groupby(<span class="st">'Tm'</span>)[<span class="st">'Tgt'</span>].<span class="bu">sum</span>(), how<span class="op">=</span><span class="st">'left'</span>, on<span class="op">=</span><span class="st">'Tm'</span>, suffixes<span class="op">=</span>(<span class="st">'_ind'</span>, <span class="st">'_team'</span>))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'Tgt_share'</span>] <span class="op">=</span> df[<span class="st">'Tgt_ind'</span>] <span class="op">/</span> df[<span class="st">'Tgt_team'</span>]</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.loc[(df[<span class="st">'Pos'</span>] <span class="op">==</span> pos) <span class="op">&amp;</span> (df[<span class="st">'Rec'</span>] <span class="op">&gt;=</span> min_receptions)]</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> df.sort_values(by<span class="op">=</span><span class="st">'Tgt_share'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">'Tgt_share_rank'</span>] <span class="op">=</span> df[<span class="st">'Tgt_share'</span>].rank(ascending<span class="op">=</span><span class="va">False</span>, method<span class="op">=</span><span class="st">'min'</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> pd.option_context(<span class="st">'display.max_rows'</span>, <span class="va">None</span>):</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>      df <span class="op">=</span> df[[<span class="st">'Player'</span>, <span class="st">'Tm'</span>, <span class="st">'Tgt_ind'</span>, <span class="st">'Rec'</span>, <span class="st">'Tgt_share'</span>, <span class="st">'Tgt_share_rank'</span>]]</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>      display(df.head(n))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> yearly_stats(<span class="dv">2020</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>get_top_target_share(df, pos<span class="op">=</span><span class="st">'WR'</span>, min_receptions<span class="op">=</span><span class="dv">3</span>, n<span class="op">=</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Player</th>
+      <th>Tm</th>
+      <th>Tgt_ind</th>
+      <th>Rec</th>
+      <th>Tgt_share</th>
+      <th>Tgt_share_rank</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>3</th>
+      <td>Davante Adams*+</td>
+      <td>GNB</td>
+      <td>149</td>
+      <td>115</td>
+      <td>0.297405</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>DeAndre Hopkins*</td>
+      <td>ARI</td>
+      <td>160</td>
+      <td>115</td>
+      <td>0.294659</td>
+      <td>2.0</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>Stefon Diggs*+</td>
+      <td>BUF</td>
+      <td>166</td>
+      <td>127</td>
+      <td>0.290718</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>70</th>
+      <td>Robby Anderson</td>
+      <td>CAR</td>
+      <td>136</td>
+      <td>95</td>
+      <td>0.258065</td>
+      <td>4.0</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>Justin Jefferson*</td>
+      <td>MIN</td>
+      <td>125</td>
+      <td>88</td>
+      <td>0.257732</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <th>103</th>
+      <td>Marquise Brown</td>
+      <td>BAL</td>
+      <td>100</td>
+      <td>58</td>
+      <td>0.257732</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <th>37</th>
+      <td>Allen Robinson</td>
+      <td>CHI</td>
+      <td>151</td>
+      <td>102</td>
+      <td>0.253782</td>
+      <td>7.0</td>
+    </tr>
+    <tr>
+      <th>49</th>
+      <td>Keenan Allen*</td>
+      <td>LAC</td>
+      <td>147</td>
+      <td>100</td>
+      <td>0.251712</td>
+      <td>8.0</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>Tyler Lockett</td>
+      <td>SEA</td>
+      <td>132</td>
+      <td>100</td>
+      <td>0.245810</td>
+      <td>9.0</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>D.K. Metcalf*</td>
+      <td>SEA</td>
+      <td>129</td>
+      <td>83</td>
+      <td>0.240223</td>
+      <td>10.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>get_top_target_share(df, pos<span class="op">=</span><span class="st">'RB'</span>, min_receptions<span class="op">=</span><span class="dv">3</span>, n<span class="op">=</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Player</th>
+      <th>Tm</th>
+      <th>Tgt_ind</th>
+      <th>Rec</th>
+      <th>Tgt_share</th>
+      <th>Tgt_share_rank</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>192</th>
+      <td>Kalen Ballage</td>
+      <td>2TM</td>
+      <td>37</td>
+      <td>29</td>
+      <td>0.229814</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Alvin Kamara*</td>
+      <td>NOR</td>
+      <td>107</td>
+      <td>83</td>
+      <td>0.210630</td>
+      <td>2.0</td>
+    </tr>
+    <tr>
+      <th>119</th>
+      <td>J.D. McKissic</td>
+      <td>WAS</td>
+      <td>110</td>
+      <td>80</td>
+      <td>0.191972</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>190</th>
+      <td>James White</td>
+      <td>NWE</td>
+      <td>62</td>
+      <td>49</td>
+      <td>0.147971</td>
+      <td>4.0</td>
+    </tr>
+    <tr>
+      <th>77</th>
+      <td>Nyheim Hines</td>
+      <td>IND</td>
+      <td>76</td>
+      <td>63</td>
+      <td>0.142056</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <th>53</th>
+      <td>Mike Davis</td>
+      <td>CAR</td>
+      <td>70</td>
+      <td>59</td>
+      <td>0.132827</td>
+      <td>6.0</td>
+    </tr>
+    <tr>
+      <th>243</th>
+      <td>Ty Johnson</td>
+      <td>2TM</td>
+      <td>21</td>
+      <td>16</td>
+      <td>0.130435</td>
+      <td>7.0</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Aaron Jones*</td>
+      <td>GNB</td>
+      <td>63</td>
+      <td>47</td>
+      <td>0.125749</td>
+      <td>8.0</td>
+    </tr>
+    <tr>
+      <th>209</th>
+      <td>Le'Veon Bell</td>
+      <td>2TM</td>
+      <td>20</td>
+      <td>16</td>
+      <td>0.124224</td>
+      <td>9.0</td>
+    </tr>
+    <tr>
+      <th>110</th>
+      <td>Chase Edmonds</td>
+      <td>ARI</td>
+      <td>67</td>
+      <td>53</td>
+      <td>0.123389</td>
+      <td>10.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>get_top_target_share(df, pos<span class="op">=</span><span class="st">'TE'</span>, min_receptions<span class="op">=</span><span class="dv">3</span>, n<span class="op">=</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Player</th>
+      <th>Tm</th>
+      <th>Tgt_ind</th>
+      <th>Rec</th>
+      <th>Tgt_share</th>
+      <th>Tgt_share_rank</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>13</th>
+      <td>Darren Waller*</td>
+      <td>LVR</td>
+      <td>145</td>
+      <td>107</td>
+      <td>0.277247</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Travis Kelce*+</td>
+      <td>KAN</td>
+      <td>145</td>
+      <td>105</td>
+      <td>0.245347</td>
+      <td>2.0</td>
+    </tr>
+    <tr>
+      <th>45</th>
+      <td>Mark Andrews</td>
+      <td>BAL</td>
+      <td>88</td>
+      <td>58</td>
+      <td>0.226804</td>
+      <td>3.0</td>
+    </tr>
+    <tr>
+      <th>165</th>
+      <td>Evan Engram*</td>
+      <td>NYG</td>
+      <td>109</td>
+      <td>63</td>
+      <td>0.220648</td>
+      <td>4.0</td>
+    </tr>
+    <tr>
+      <th>51</th>
+      <td>T.J. Hockenson*</td>
+      <td>DET</td>
+      <td>101</td>
+      <td>67</td>
+      <td>0.200000</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <th>56</th>
+      <td>Logan Thomas</td>
+      <td>WAS</td>
+      <td>110</td>
+      <td>72</td>
+      <td>0.191972</td>
+      <td>6.0</td>
+    </tr>
+    <tr>
+      <th>148</th>
+      <td>Noah Fant</td>
+      <td>DEN</td>
+      <td>93</td>
+      <td>62</td>
+      <td>0.174484</td>
+      <td>7.0</td>
+    </tr>
+    <tr>
+      <th>153</th>
+      <td>Hunter Henry</td>
+      <td>LAC</td>
+      <td>93</td>
+      <td>60</td>
+      <td>0.159247</td>
+      <td>8.0</td>
+    </tr>
+    <tr>
+      <th>55</th>
+      <td>Mike Gesicki</td>
+      <td>MIA</td>
+      <td>85</td>
+      <td>53</td>
+      <td>0.158287</td>
+      <td>9.0</td>
+    </tr>
+    <tr>
+      <th>188</th>
+      <td>Austin Hooper</td>
+      <td>CLE</td>
+      <td>70</td>
+      <td>46</td>
+      <td>0.151188</td>
+      <td>10.0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
