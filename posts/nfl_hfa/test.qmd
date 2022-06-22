@@ -1,0 +1,12 @@
+---
+title: "Untitled"
+format: html
+---
+
+## Subheading
+
+Here is some nice writing.
+
+::: {.column-screen}
+![A full screen image](plots/league_wide_win_team.jpg)
+:::

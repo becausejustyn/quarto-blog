@@ -1,8 +1,8 @@
 ---
-title: "Untitled"
+title: "Colouring Text in ggplot2"
 execute: 
   freeze: true
-  eval: false
+  eval: true
 format:
   html:
     highlight: true
@@ -14,9 +14,11 @@ format:
 # Colouring Text in ggplot2
 
 ```{r}
+#| warning: false
 library(tidyverse)
 library(ggtext) 
 library(grid)
+library(glue)
 ```
 
 ```{r}

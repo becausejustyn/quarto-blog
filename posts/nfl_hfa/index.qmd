@@ -1,8 +1,8 @@
 ---
-title: "Untitled"
+title: "NFL Home Field Advantage"
 execute: 
   freeze: true
-  eval: false
+  eval: true
 format:
   html:
     highlight: true
@@ -13,21 +13,29 @@ format:
 
 
 ```{r}
+#| warning: false
 library(tidyverse)
 library(broom)
 library(rstan)
 library(ggrepel)
 library(gghighlight)
+library(gt)
+library(gtExtras)
 
 future::plan("multisession")
 ```
 
 ```{r}
-# if you do not have the data on your local device you can either 
-# swap the path with "https://raw.githubusercontent.com/guga31bb/nflfastR-data/master/data/play_by_play_{x}.rds"
-# or get it via nflfastR::load_pbp(1999:2021)
-# note that it will take a while since there is over 1 million rows by 366-ish columns 
-# that is why I filter and drop rows straight away
+#| echo: false
+#| output: false
+pbp <- read_csv('pbp.csv')
+```
+
+If you do not have the data on your local device you can either swap the path with `https://raw.githubusercontent.com/guga31bb/nflfastR-data/master/data/play_by_play_{x}.rds` or get it via `nflfastR::load_pbp(1999:2021)`. Note that it will take a while since there is over 1 million rows by 366-ish columns, which is why I filter and drop rows straight away. 
+
+Using `{x}` with `glue()` allows us to loop every value input from the `map_df` call into the location. I found this super cool the first time I saw it. This is exactly like f strings in Python if you are familiar with that.
+```{r}
+#| eval: false
 
 pbp <- purrr::map_df(c(1999:2021), function(x) {
   readRDS(
@@ -35,16 +43,23 @@ pbp <- purrr::map_df(c(1999:2021), function(x) {
   )}) %>%
   filter(
     season_type == 'REG',
+    # drop values that no plays occur
+    # e.g. timeout, halftime, etc.
     !is.na(posteam_type)
     ) %>%
-  select(game_id, season, week, posteam_type, season_type, home_team, away_team, home_score, away_score) %>%
+  select(
+    game_id, season, week, posteam_type, season_type, 
+    home_team, away_team, home_score, away_score) %>%
   group_by(game_id) %>%
-  # this will give two rows for each game, one for the home team, one for the away team
-  #slice(n()) or distinct(game_id, posteam_type, .keep_all = TRUE) if you only want one observation per row
+  # this will give two rows for each game, one for 
+  # the home team, one for the away team
+  #slice(n()) or distinct(game_id, posteam_type, 
+  # .keep_all = TRUE) if you only want one observation per row
   distinct(.keep_all = TRUE)
 ```
 
 ```{r}
+#| warning: false
 # team
 league_wide_win_team <- pbp %>%
   distinct(game_id, .keep_all = TRUE) %>%
@@ -60,18 +75,20 @@ league_wide_win_team <- pbp %>%
     # so you can plot is sequentially
     week_n = row_number()
   ) 
-```
 
-```{r}
 #add team colours for plotting
 league_wide_win_team <- league_wide_win_team %>%
   left_join(
-    select(nflfastR::teams_colors_logos, home_team = team_abbr, team_name, team_color, team_color2)
-  )
+    select(
+      nflfastR::teams_colors_logos, 
+      home_team = team_abbr, 
+      team_name, team_color, 
+      team_color2)
+      )
 ```
 
-
 ```{r}
+#| eval: false
 league_wide_win_team %>%
   mutate(
     #LV colour is grey so I am using their secondary colour here
@@ -87,10 +104,10 @@ league_wide_win_team %>%
     group = home_team,
   )) +
   geom_line(size = 1.15) +
-  scale_x_discrete(breaks = c("'99", "'01", "'03", "'05", "'07", "'09", "'11", "'13", "'15", "'17", "'19", "'21")) +
+  scale_x_discrete(breaks = paste0("'", seq(1999, 2021, 3) |> substr(3, 4))) +
   gghighlight(use_direct_label = FALSE, keep_scales = TRUE) +
   scale_color_identity(aesthetics = c("color", "fill")) +
-  facet_wrap(~home_team, scales = "free", nrow = 4L) +
+  facet_wrap(~home_team, scales = "free", ncol = 5L) +
   labs(
     x = "Season",
     y = "HFA",
@@ -99,11 +116,15 @@ league_wide_win_team %>%
     caption = "data: nflfastR"
   ) +
   becausejustynfun::white_theme() +
-  theme(axis.text = element_text(size = 8))
+  theme(axis.text = element_text(size = 6))
 ```
 
+::: {.column-screen}
+![A full screen image](plots/league_wide_win_team.jpg)
+:::
 
 ```{r}
+#| eval: false
 league_wide_win_team %>%
   ggplot(aes(
     x = factor(season), 
@@ -124,12 +145,22 @@ league_wide_win_team %>%
   hrbrthemes::theme_ft_rc()
 ```
 
+::: {.column-screen}
+![A full screen image](plots/league_wide_win_league.jpg)
+:::
+
 ```{r}
 mod <- lm(mean_point_diff ~ factor(season), data = league_wide_win_team)
-summary(mod)
+
+tidy(mod) %>% 
+  gt() %>% 
+  fmt_number(
+    columns = c(2:5), 
+    decimals = 3)
 ```
 
 ```{r}
+#| eval: false
 league_wide_win_team %>%
   ggplot(aes(
     x = factor(season), 
@@ -148,14 +179,17 @@ league_wide_win_team %>%
   hrbrthemes::theme_ft_rc()
 ```
 
-```{r}
-# Removing this linear trend and focus on residuals will examine teams' performance after controlling for this decrease in hfa 
+::: {.column-screen}
+![A full screen image](plots/linear_trend.jpg)
+:::
 
+Removing this linear trend and focus on residuals will examine teams' performance after controlling for this decrease in hfa 
+
+Average the residuals for each team then, perform a one-sample t-test to see teams that were above or below the average HFA despite the decrease HFA over this time 
+
+```{r}
 league_wide_win_team <- league_wide_win_team %>%
   mutate(rel_hfa = resid(mod))
-
-# Average the residuals for each team then, perform a one-sample t-test to see teams that were above
-# or below the average HFA despite the decrease HFA over this time 
 
 best_hfa <- league_wide_win_team %>% 
   group_by(home_team) %>%
@@ -168,12 +202,22 @@ best_hfa <- league_wide_win_team %>%
   ) %>%
   mutate(sig = tpval < .05)
 
-print(best_hfa)
+best_hfa %>%
+  gt() %>%
+  fmt_number(columns = c(2:5), decimals = 3) %>%
+  cols_label(
+    home_team = "Home Team",
+    mean = 'Mean',
+    sd = 'SD',
+    sem = 'SEM',
+    tpval = "T P-val",
+    sig = 'Sig'
+  ) 
 ```
 
-```{r}
-# Plot the average residuals, their SEM, colouring if they are significantly different form 0 
+Plot the average residuals, their SEM, colouring if they are significantly different form 0 
 
+```{r}
 # y.axis bold conditional 
 best_hfa_sort <- arrange(best_hfa, mean)                       
 axisFace <- if_else(best_hfa_sort[['sig']] == TRUE, 'bold', 'plain')
@@ -192,6 +236,7 @@ below <- best_hfa %>%
 ```
 
 ```{r}
+#| eval: false
 best_hfa %>%
   ggplot(aes(
     x = mean,
@@ -251,7 +296,9 @@ best_hfa %>%
   annotate("text", x = .1, y = below[['home_team']][3], label = "Worst Teams")
 ```
 
-
+::: {.column-screen}
+![A full screen image](plots/hfa_sig_test.jpg)
+:::
 
 
 
@@ -350,7 +397,6 @@ model{
 }
 ```
 
-
 ```{r}
 options(mc.cores = parallel::detectCores())
 
@@ -366,7 +412,10 @@ weekly_team_win <- pbp %>%
   ) 
 
 team_vars <- distinct(weekly_team_win, home_team) %>% pull()
+```
 
+```{r}
+#| eval: false
 fits <- lapply(1999:2021,function(y){
   year <- y
   stan_df <- weekly_team_win %>% 
@@ -384,7 +433,7 @@ fits <- lapply(1999:2021,function(y){
         pull(home_result)
     )
   
-    fit <- stan("~/Downloads/nfl_new/NFL_HFA-master/scripts/season_model.stan",
+    fit <- stan('posts/nfl_hfa/season_model.stan',
                 data = stan_list,
                 iter = 2000,
                 chains = 3,
@@ -393,14 +442,37 @@ fits <- lapply(1999:2021,function(y){
                 include = FALSE)
     fit
 })
+```
 
-if(!dir.exists("~/Downloads/nfl_new/NFL_HFA-master/output")) dir.create("~/Downloads/nfl_new/NFL_HFA-master/output")
-save(team_vars, fits, file = "~/Downloads/nfl_new/NFL_HFA-master/output/team_effects_default_priors.Rdata")
+
+
+```{r}
+#| eval: false
+if(!dir.exists("posts/nfl_hfa/output")) dir.create("posts/nfl_hfa/output")
+save(team_vars, fits, file = "posts/nfl_hfa/output/team_effects_default_priors.Rdata")
+
+load("output/team_effects_default_priors.Rdata")
+
+stan_home_results <- map_df(1999:2021,function(y){
+  fit <- fits[[y-1998]]
+  output <- summary(fit,pars = c("alpha","alpha_mean","alpha_sigma"))$summary %>%
+    as_tibble(rownames = "parameter") %>%
+    mutate(season = y,
+           team = c(team_vars,"ALL","ALL"))
+  output
+})
+
+write_csv(stan_home_results, "stan_home_results.csv")
 ```
 
 ```{r}
-#all teams HFA by season and team
+#| output: false
+stan_home_results <- read_csv('stan_home_results.csv')
+```
 
+```{r}
+#| eval: false
+#all teams HFA by season and team
 
 stan_home_results %>%
   left_join(nflfastR::teams_colors_logos, by = c("team" = "team_abbr")) %>%
@@ -419,10 +491,11 @@ stan_home_results %>%
     colour = team_color
   )) +
   geom_line(size = 1.15) +
-  scale_x_discrete(breaks = c("'99", "'01", "'03", "'05", "'07", "'09", "'11", "'13", "'15", "'17", "'19", "'21")) +
+  scale_x_discrete(labels = paste0("'", substr(c(1999:2021), 3, 4))) +
+  #scale_x_discrete(breaks = c("'99", "'01", "'03", "'05", "'07", "'09", "'11", "'13", "'15", "'17", "'19", "'21")) +
   gghighlight(use_direct_label = FALSE, keep_scales = TRUE) +
   scale_color_identity(aesthetics = c("color", "fill")) +
-  facet_wrap(vars(team), scales = "free", ncol = 8L) +
+  facet_wrap(vars(team), scales = "free", ncol = 5L) +
   labs(
     x = "Season",
     y = "HFA",
@@ -431,12 +504,17 @@ stan_home_results %>%
     caption = "data: nflfastR"
   ) +
   becausejustynfun::white_theme() +
-  theme(axis.text = element_text(size = 8))
+  theme(axis.text = element_text(size = 6))
 ```
 
+::: {.column-screen}
+![A full screen image](plots/stan_team_hfa.jpg)
+:::
+
 ```{r}
+#| eval: false
 #best and worst
-best_worst <- stan_home_results %>%
+stan_home_results %>%
   left_join(nflfastR::teams_colors_logos, by = c("team" = "team_abbr")) %>%
   filter(team != "ALL") %>%
   group_by(season) %>%
@@ -448,23 +526,26 @@ best_worst <- stan_home_results %>%
       mean_rank == 32 ~ "Best"
       )) %>%
   ggplot(aes(x = season, y = mean, color = hfa_bw)) +
-  # scale_color_manual(breaks = nflfastR::teams_colors_logos$team_abbr,
-  #                    values = nflfastR::teams_colors_logos$team_color) +
   geom_line() +
   ggimage::geom_image(aes(image = team_logo_wikipedia, color = NULL), size = 0.05, by = "width") +
-  theme_bw() +
-  scale_color_brewer(palette = "Set1") +
+  becausejustynfun::white_theme() +
+  #theme_bw() +
+  scale_color_brewer(palette = "Set2") +
   theme(legend.position = "bottom") +
   labs(
     colour = "HFA Rank", 
     x = "Season", 
     y = "HFA (Points)",
-    title = "Best and Worst Home-Field Advantage by Season"
+    title = "Best & Worst Home-Field Advantage by \nSeason"
     ) 
 ```
 
+::: {.column-screen}
+![A full screen image](plots/league_hfa.jpg)
+:::
+
 ```{r}
-stan_home_results %>%
+stan_table_df <- stan_home_results %>%
   filter(
     parameter != "alpha_sigma", 
     parameter != "alpha_mean"
@@ -476,10 +557,21 @@ stan_home_results %>%
     ) %>%
   arrange(-mean) %>%
   left_join(select(nflfastR::teams_colors_logos, team = team_abbr, team_logo_espn), by = "team") %>%
-  mutate(
-    team_logo_espn = str_c("![](", team_logo_espn, "){width=30px}")) %>%
-  select(team_logo_espn, team, mean, sd) %>%
-  knitr::kable(digits = 2, col.names = c("", "Team", "HFA (Mean)", "HFA (SD)"), align = "clcc") %>%
-  kableExtra::kable_styling(bootstrap_options = "striped", full_width = F)
+  select(team_logo_espn, team, mean, sd)
+
+stan_table_df %>%
+  gt() %>%
+  gtExtras::gt_img_rows(team_logo_espn) %>%
+  tab_spanner(
+    label = "HFA",
+    columns = c(mean, sd)
+  ) %>%
+  cols_label(
+    team_logo_espn = "",
+    team = md("**Team**"),
+    mean = md("**Mean**"),
+    sd = md("**SD**")
+  ) %>%
+  fmt_number(columns = c(3, 4), decimals = 2)
 ```
 

@@ -2,7 +2,7 @@
 title: "Untitled"
 execute: 
   freeze: true
-  eval: false
+  eval: true
 format:
   html:
     highlight: true
