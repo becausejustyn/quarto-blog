@@ -18,7 +18,7 @@
   </url>
   <url>
     <loc>https://www.myblogexample.io/posts/my_first_post/computations.html</loc>
-    <lastmod>2022-06-21T04:56:09.358Z</lastmod>
+    <lastmod>2022-06-23T02:38:46.014Z</lastmod>
   </url>
   <url>
     <loc>https://www.myblogexample.io/posts/using_r/index.html</loc>
@@ -103,5 +103,9 @@
   <url>
     <loc>https://www.myblogexample.io/posts/nfl_hfa/test.html</loc>
     <lastmod>2022-06-22T02:17:32.881Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.myblogexample.io/posts/intro_post/index.html</loc>
+    <lastmod>2022-06-23T02:38:44.717Z</lastmod>
   </url>
 </urlset>

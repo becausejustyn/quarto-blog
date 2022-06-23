@@ -285,5 +285,12 @@
     "title": "Untitled",
     "section": "",
     "text": "Here is some nice writing.\n\n\n\n\nA full screen image"
+  },
+  {
+    "objectID": "posts/intro_post/index.html",
+    "href": "posts/intro_post/index.html",
+    "title": "Intro Post",
+    "section": "",
+    "text": "Instead of porting my blog, I decided that I would start from scratch so I could keep the posts that I wanted, and fix the ones that I would keep. I have learned a lot since the start of my original blog, and I thought it might be best to make note of that. Instead of removing less efficient approaches that my old posts might have, this will be a good chance to take advantage of the features that Quarto provide. I’ll give an example in my next post.\nGiven how much easier it will be to post, my goal will be to have a new blog post at least once a month. From this post it will not be too much of a challenge since I have a lot of drafts saved, however, my goal is for sustainability in the future."
   }
 ]
