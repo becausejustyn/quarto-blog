@@ -1,0 +1,19 @@
+---
+title: "becausejustyn"
+listing:
+  - id: posts-en
+    contents: "*/en/*.qmd"
+    type: default
+    fields: [image, date, title, subtitle, categories, author, reading-time]  
+    sort: "date desc"
+    # categories: cloud
+    sort-ui: true
+    filter-ui: true
+    page-size: 10
+comments: false
+---
+
+## Posts
+
+::: {posts-en}
+:::

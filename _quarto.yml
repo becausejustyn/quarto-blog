@@ -20,7 +20,9 @@ website:
     right:
       - about.qmd
       - text: Posts
-        href: All posts
+        menu:
+          - text: All posts
+            href: posts/en.qmd
       - text: github
         href: https://github.com/becausejustyn
       - text: twitter
