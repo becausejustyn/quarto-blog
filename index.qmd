@@ -1,14 +1,22 @@
 ---
 title: "quarto-blog"
 listing:
-  contents: posts
-  sort: "date desc"
-  type: default
-  categories: true
-  sort-ui: false
-  filter-ui: false
+  - id: posts-en
+    contents: posts/*/en/*.qmd
+    type: default
+    fields: [image, date, title, subtitle, categories, author, reading-time]  
+    sort: "date desc"
+    categories: cloud
+    sort-ui: true
+    filter-ui: true
+    page-size: 3
 page-layout: full
 title-block-banner: true
+toc: false
+comments: false
 ---
 
+## Posts in English <a href="../posts/en.html"> <button type="button" class="btn btn-primary float-end btn-sm">See all posts in English</button></a>
 
+::: {#posts-en}
+:::
