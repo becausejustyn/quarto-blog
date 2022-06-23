@@ -18,5 +18,7 @@ format:
     theme: Superhero #Darkly
     css: styles.css
 
-
+comments: 
+  giscus: 
+    repo: becausejustyn/quarto-blog
 
