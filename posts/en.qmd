@@ -15,5 +15,5 @@ comments: false
 
 ## Posts
 
-::: {posts-en}
+::: {#posts-en}
 :::
