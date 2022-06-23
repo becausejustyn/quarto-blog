@@ -1,1 +1,1 @@
-Sitemap: https://www.myblogexample.io/sitemap.xml
+Sitemap: https://becausejustyn.netlify.app/sitemap.xml

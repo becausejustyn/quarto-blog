@@ -3,20 +3,34 @@ project:
 
 website:
   title: "becausejustyn"
-  site-url: https://www.myblogexample.io
+  site-url: https://becausejustyn.netlify.app
+  page-footer:
+    left: "Blog made with [Quarto](https://quarto.org/)."
+    right: 
+      - icon: github
+        href: https://github.com/becausejustyn
+      - icon: twitter
+        href: https://twitter.com/becausejustyn
+      - icon: envelope
+        href: justynrodrigues@hotmail.com.au
+  twitter-card: 
+    creator: "@becausejustyn"
+    card-style: summary_large_image  
   navbar:
     right:
       - about.qmd
-      - icon: github
-        href: https://github.com/
-      - icon: twitter
-        href: https://twitter.com
-      - icon: rss
-        href: index.xml 
+      - text: Posts
+        href: All posts
+      - text: github
+        href: https://github.com/becausejustyn
+      - text: twitter
+        href: https://twitter.com/becausejustyn
 format:
   html:
     theme: Superhero #Darkly
     css: styles.css
+    smooth-scroll: true
+    toc: true
 
 comments: 
   giscus: 
